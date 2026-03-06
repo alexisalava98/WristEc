@@ -4,7 +4,7 @@
 // WatchTable — Tabla de inventario de relojes
 // Client Component: maneja filtros, búsqueda y modales
 // ============================================================
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, Search, Filter, Edit2, ShoppingCart, ChevronUp, ChevronDown, Trash2 } from 'lucide-react'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -38,6 +38,12 @@ export function WatchTable({ initialWatches }: WatchTableProps) {
     // router.refresh() actualiza los contadores SSR del encabezado de la página
     router.refresh()
   }, [router])
+
+  // Refrescar datos al montar el componente para garantizar que siempre
+  // se muestren datos frescos aunque el router sirva HTML cacheado.
+  useEffect(() => {
+    refreshWatches()
+  }, [refreshWatches])
 
   // Estados de modales
   const [addModalOpen, setAddModalOpen] = useState(false)
